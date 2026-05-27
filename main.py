@@ -1,36 +1,19 @@
-import requests
-from telegram import Bot
-from config import BOT_TOKEN, CHANNEL_ID
+from playwright.sync_api import sync_playwright
 
-bot = Bot(token=BOT_TOKEN)
+url = "https://www.sheinindia.in/api/category/sverse-5939-37961?currentPage=1&pageSize=5&format=json"
 
-url = "https://www.sheinindia.in/api/category/sverse-5939-37961"
+with sync_playwright() as p:
 
-params = {
-    "currentPage": 1,
-    "pageSize": 5,
-    "format": "json"
-}
+    browser = p.chromium.launch(headless=True)
 
-headers = {
-    "User-Agent": "Mozilla/5.0",
-    "Accept": "application/json",
-    "Referer": "https://www.sheinindia.in/",
-}
+    page = browser.new_page()
 
-response = requests.get(
-    url,
-    params=params,
-    headers=headers
-)
+    response = page.goto(url)
 
-print("STATUS:", response.status_code)
-print(response.text[:500])
+    print("STATUS:", response.status)
 
-try:
-    data = response.json()
+    content = page.content()
 
-    print(data)
+    print(content[:1000])
 
-except Exception as e:
-    print("JSON ERROR:", e)
+    browser.close()
