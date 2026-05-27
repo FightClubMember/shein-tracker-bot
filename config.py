@@ -1,1 +1,2 @@
-
+BOT_TOKEN = "8916506938:AAE1-MUVg6508Eu-WGLm88tbEzlzXEklPvs"
+CHANNEL_ID = "@sheinstock_Alart"
