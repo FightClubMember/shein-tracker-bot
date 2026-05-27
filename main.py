@@ -13,38 +13,24 @@ params = {
 }
 
 headers = {
-    "User-Agent": "Mozilla/5.0"
+    "User-Agent": "Mozilla/5.0",
+    "Accept": "application/json",
+    "Referer": "https://www.sheinindia.in/",
 }
 
-response = requests.get(url, params=params, headers=headers)
+response = requests.get(
+    url,
+    params=params,
+    headers=headers
+)
 
-data = response.json()
-
-print(data)
+print("STATUS:", response.status_code)
+print(response.text[:500])
 
 try:
-    products = data["info"]["products"]
+    data = response.json()
 
-    for product in products:
-
-        name = product.get("goods_name", "No Name")
-        price = product.get("salePrice", {}).get("amount", "N/A")
-
-        image = product.get("goods_img")
-
-        caption = f"""
-🛍 {name}
-
-💰 Price: ₹{price}
-
-#shein #deal
-"""
-
-        bot.send_photo(
-            chat_id=CHANNEL_ID,
-            photo=image,
-            caption=caption
-        )
+    print(data)
 
 except Exception as e:
-    print(e)
+    print("JSON ERROR:", e)
